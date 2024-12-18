@@ -13,6 +13,11 @@ class Worker extends Model
       //  'city',
         //'email',
        // 'picture',
-        protected $guarded = [];
+       
    // ];
+   protected $guarded = [];
+   public function department() 
+   {
+    return $this->belongsTo(Department::class);
+   }
 }

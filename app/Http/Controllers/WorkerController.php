@@ -13,7 +13,7 @@ class WorkerController extends Controller
      */
     public function index()
     {
-        return Worker::all();
+        return Worker::with('department')->get();
     }
 
     /**
@@ -24,6 +24,7 @@ class WorkerController extends Controller
        // Worker::create($request->all());
       //  return response()->json(['message' => 'Worker created successfully'], 201);
        $validator = Validator::make($request->all(), [
+            'department_id' => 'required|exists:departments,id',
             'name' => 'required',
             'city' => 'required',
             'email' => 'required|email|unique:workers'
@@ -31,7 +32,7 @@ class WorkerController extends Controller
         ]);
         
         if ($validator->fails()) {
-            return response()->json($validator->error(), 422);
+            return response()->json($validator->errors(), 422);
         } 
         Worker::create($request ->all());
         return response()->json(['message' => 'worker created successfully'], 201);
@@ -56,7 +57,8 @@ class WorkerController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'email|unique:workers'
+            'email' => 'email|unique:workers',
+            'department_id' => 'exists:departments,id'
         ]);
         
         if ($validator->fails()) {

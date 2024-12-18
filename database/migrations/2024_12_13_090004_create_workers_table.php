@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('workers', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('department_id')->references('id')->on('departments');
+            $table->string("city");
             $table->string('name');
-            $table->string('city');
             $table->string('email')->unique();
             $table->string('picture')->nullable();
 
